@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const infoHandler = require("./routerHandler/infoHandler");
+const userHandler = require("./routerHandler/userHandler");
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,17 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/info", infoHandler);
+app.use("/user", userHandler);
+
+// default error handler
+const errorHandler = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(500).json({ error: err });
+};
+
+app.use(errorHandler);
 
 app.listen(5000, () => {
   console.log("listening to the port 5000");

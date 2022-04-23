@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const checkLogin = require("../middleware/checkLogin");
 const router = express.Router();
 const infoSchema = require("../Schema/infoSchema");
 const InfoCollection = new mongoose.model("InfoCollection", infoSchema);
@@ -17,7 +18,7 @@ router.post("/", async (req, res) => {
   });
 });
 
-router.get("/", async (req, res) => {
+router.get("/", checkLogin, async (req, res) => {
   try {
     const result = await InfoCollection.find({});
     res.json(result);
