@@ -2,13 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const infoHandler = require("./routerHandler/infoHandler");
-const userHandler = require("./routerHandler/userHandler");
+// const userHandler = require("./routerHandler/userHandler");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 /*
+
 info_app
 MlBF211xflwQMKuy 
  */
@@ -21,7 +22,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/info", infoHandler);
-app.use("/user", userHandler);
+// app.use("/user", userHandler);
 
 // default error handler
 const errorHandler = (err, req, res, next) => {

@@ -1,24 +1,37 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const checkLogin = require("../middleware/checkLogin");
 const router = express.Router();
 const infoSchema = require("../Schema/infoSchema");
 const InfoCollection = new mongoose.model("InfoCollection", infoSchema);
 
 router.post("/", async (req, res) => {
-  const newInfo = new InfoCollection(req.body);
+  try {
+    const newInfo = new InfoCollection(req.body);
+    await newInfo.save();
+    res.status(200).json({
+      message: "all is well!",
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "There was a server side error!",
+    });
+  }
+  /* const newInfo = new InfoCollection(req.body);
   await newInfo.save((err) => {
     if (err) {
       res.status(500).json({
         error: "There was a server side error!",
       });
     } else {
+      res.status(200).json({
+        message: "all good!",
+      });
       res.json(newInfo);
     }
-  });
+  }); */
 });
 
-router.get("/", checkLogin, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await InfoCollection.find({});
     res.json(result);
